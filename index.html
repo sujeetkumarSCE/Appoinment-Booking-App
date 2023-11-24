@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Booking App</title>
+</head>
+<body>
+    <!-- Header -->
+    <h1>Appointment Booking App</h1>
+
+    <!-- Form for Booking Appointments -->
+    <div>
+        <!-- Form with two input fields (for first name and last name) and a submit button -->
+        <form id="appointmentForm">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName">
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName">
+
+            <input type="submit" value="Book Appointment">
+        </form>
+    </div>
+
+    <!-- Display Section for Entered Data -->
+    <div id="displayData">
+        <!-- Display area for entered data -->
+    </div>
+
+    <!-- JavaScript Section -->
+    <script>
+        // Function to handle form submission
+        function handleFormSubmit(event) {
+            event.preventDefault(); // Prevents the default form submission behavior
+
+            // Get values from the form
+            var firstName = document.getElementById('firstName').value;
+            var lastName = document.getElementById('lastName').value;
+
+            // Create an object with the entered data
+            var appointmentData = {
+                firstName: firstName,
+                lastName: lastName
+            };
+
+            // Store the data in local storage as a JSON string
+            localStorage.setItem('appointmentData', JSON.stringify(appointmentData));
+
+            // Call the function to display the stored data
+            displayStoredData();
+        }
+
+        // Function to display stored data
+        function displayStoredData() {
+            // Retrieve the stored data from local storage
+            var storedData = localStorage.getItem('appointmentData');
+
+            // Check if there is stored data
+            if (storedData) {
+                // Parse the JSON string to an object
+                storedData = JSON.parse(storedData);
+
+                // Display the entered data dynamically in the 'displayData' div
+                var displayDiv = document.getElementById('displayData');
+                displayDiv.innerHTML = '<h2>Entered Data:</h2>' +
+                                       '<p>First Name: ' + storedData.firstName + '</p>' +
+                                       '<p>Last Name: ' + storedData.lastName + '</p>';
+            }
+        }
+
+        // Attach the handleFormSubmit function to the form's submit event
+        document.getElementById('appointmentForm').addEventListener('submit', handleFormSubmit);
+
+        // Call the displayStoredData function on page load to display any existing data
+        displayStoredData();
+    </script>
+</body>
+</html>
