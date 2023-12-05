@@ -1,0 +1,54 @@
+function submitForm() {
+    // Get input values
+    var name = document.getElementById('name').value;
+    var email = document.getElementById('email').value;
+
+    // Retrieve existing data from local storage or initialize an empty array
+    var existingData = localStorage.getItem('allUserData');
+    var allUserData = existingData ? JSON.parse(existingData) : [];
+
+    // Create an object to store the form data
+    var userData = {
+        name: name,
+        email: email
+    };
+
+    // Add the new user data to the array
+    allUserData.push(userData);
+
+    // Convert the array to a JSON string
+    var jsonString = JSON.stringify(allUserData);
+
+    // Store the JSON string in local storage
+    localStorage.setItem('allUserData', jsonString);
+
+    // Optionally, you can clear the form after submission
+    document.getElementById('name').value = '';
+    document.getElementById('email').value = '';
+
+    // Display all stored data
+    displayStoredData();
+}
+
+function displayStoredData() {
+    var storedData = localStorage.getItem('allUserData');
+    if (storedData) {
+        var allUserData = JSON.parse(storedData);
+
+        // Display all stored user data
+        var displayDiv = document.getElementById('userDataDisplay');
+        displayDiv.innerHTML = '';
+
+        allUserData.forEach(function (userDataObj, index) {
+            displayDiv.innerHTML += '<p><strong>User ' + (index + 1) + ':</strong></p>' +
+                '<p><strong>Name:</strong> ' + userDataObj.name + '</p>' +
+                '<p><strong>Email:</strong> ' + userDataObj.email + '</p>';
+        });
+    }
+}
+
+// Display stored data when the page loads
+window.onload = function () {
+    displayStoredData();
+};
+
